@@ -1,27 +1,22 @@
 {
-  "name": "webcrawler",
+  "name": "crawling",
   "version": "1.0.0",
-  "description": "",
-  "main": "main.js",
+  "description": "A web crawler project",
+  "main": "src/index.js",
   "scripts": {
-    "start": "node --no-warnings main.js",
+    "start": "node src/index.js",
     "test": "jest"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Hendreu/webcrawler.git"
-  },
-  "keywords": [],
+  "keywords": [
+    "web-crawler",
+    "nodejs"
+  ],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Hendreu/webcrawler/issues"
+  "dependencies": {
+    "jsdom": "^22.1.0"
   },
-  "homepage": "https://github.com/Hendreu/webcrawler#readme",
   "devDependencies": {
     "jest": "^29.7.0"
-  },
-  "dependencies": {
-    "jsdom": "^26.1.0"
   }
 }
