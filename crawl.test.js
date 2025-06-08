@@ -1,89 +1,89 @@
-const { normalizeURL, getURLsFromHTML } = require("./crawl");
+const { normalizeURL, extractURLsFromHTML } = require("./crawl");
 const { test, expect } = require("@jest/globals");
 
 test("normalizeURL strip protocol", () => {
-  const input = "https://blog.boot.dev/path";
+  const input = "https://example.com/path";
   const actual = normalizeURL(input);
-  const expected = "blog.boot.dev/path";
+  const expected = "example.com/path";
   expect(actual).toEqual(expected);
 });
 
 test("normalizeURL strip trail", () => {
-  const input = "https://blog.boot.dev/path/";
+  const input = "https://example.com/path/";
   const actual = normalizeURL(input);
-  const expected = "blog.boot.dev/path";
+  const expected = "example.com/path";
   expect(actual).toEqual(expected);
 });
 
 test("normalizeURL capitals", () => {
-  const input = "https://BLOG.boot.dev/path";
+  const input = "https://EXAMPLE.com/path";
   const actual = normalizeURL(input);
-  const expected = "blog.boot.dev/path";
+  const expected = "example.com/path";
   expect(actual).toEqual(expected);
 });
 
 test("normalizeURL strip http", () => {
-  const input = "http://blog.boot.dev/path";
+  const input = "http://example.com/path";
   const actual = normalizeURL(input);
-  const expected = "blog.boot.dev/path";
+  const expected = "example.com/path";
   expect(actual).toEqual(expected);
 });
 
-test("getURLsFromHTML absolute", () => {
+test("extractURLsFromHTML absolute", () => {
   const inputHTMLBody = `
 <html>
     <body>
-        <a href="https://blog.boot.dev/path/">
-            Boot.dev Blog
+        <a href="https://example.com/path/">
+            Example Website
         </a>
     </body>
 </html>
     `;
-  const inputBaseURL = "https://blog.boot.dev/path/";
-  const actual = getURLsFromHTML(inputHTMLBody, inputBaseURL);
-  const expected = ["https://blog.boot.dev/path/"];
+  const inputBaseURL = "https://example.com/path/";
+  const actual = extractURLsFromHTML(inputHTMLBody, inputBaseURL);
+  const expected = ["https://example.com/path/"];
   expect(actual).toEqual(expected);
 });
 
-test("getURLsFromHTML relative", () => {
+test("extractURLsFromHTML relative", () => {
   const inputHTMLBody = `
 <html>
     <body>
         <a href="/path/">
-            Boot.dev Blog
+            Example Website
         </a>
     </body>
 </html>
 `;
-  const inputBaseURL = "https://blog.boot.dev";
-  const actual = getURLsFromHTML(inputHTMLBody, inputBaseURL);
-  const expected = ["https://blog.boot.dev/path/"];
+  const inputBaseURL = "https://example.com";
+  const actual = extractURLsFromHTML(inputHTMLBody, inputBaseURL);
+  const expected = ["https://example.com/path/"];
   expect(actual).toEqual(expected);
 });
 
-test("getURLsFromHTML both urls", () => {
+test("extractURLsFromHTML both urls", () => {
   const inputHTMLBody = `
 <html>
     <body>
-        <a href="https://blog.boot.dev/path1/">
-            Boot.dev Blog Path One
+        <a href="https://example.com/path1/">
+            Example Website Path One
         </a>
         <a href="/path2/">
-            Boot.dev Blog Path Two
+            Example Website Path Two
         </a>
     </body>
 </html>
 `;
-  const inputBaseURL = "https://blog.boot.dev";
-  const actual = getURLsFromHTML(inputHTMLBody, inputBaseURL);
+  const inputBaseURL = "https://example.com";
+  const actual = extractURLsFromHTML(inputHTMLBody, inputBaseURL);
   const expected = [
-    "https://blog.boot.dev/path1/",
-    "https://blog.boot.dev/path2/",
+    "https://example.com/path1/",
+    "https://example.com/path2/",
   ];
   expect(actual).toEqual(expected);
 });
 
-test("getURLsFromHTML invalid", () => {
+test("extractURLsFromHTML invalid", () => {
   const inputHTMLBody = `
 <html>
     <body>
@@ -93,8 +93,8 @@ test("getURLsFromHTML invalid", () => {
     </body>
 </html>
 `;
-  const inputBaseURL = "https://blog.boot.dev";
-  const actual = getURLsFromHTML(inputHTMLBody, inputBaseURL);
+  const inputBaseURL = "https://example.com";
+  const actual = extractURLsFromHTML(inputHTMLBody, inputBaseURL);
   const expected = [];
   expect(actual).toEqual(expected);
 });
